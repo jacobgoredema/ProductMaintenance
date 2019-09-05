@@ -10,6 +10,17 @@ namespace ProductMaintenance.ViewModels
     {
         private List<Product> products;
 
+        public Product this[int i]
+        {
+            get
+            {
+                return products[i];                
+            }
+            set
+            {
+                products[i] = value;
+            }
+        }
         public ProductList()
         {
             products = new List<Product>();
