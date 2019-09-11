@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ProductMaintenance.Models;
+using ProductMaintenance.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +14,7 @@ namespace ProductMaintenance
 {
     public partial class frmProductMain : Form
     {
-        private List<Product> products = null;
+        private ProductList products = new ProductList();
 
         public frmProductMain()
         {
@@ -21,7 +23,13 @@ namespace ProductMaintenance
 
         private void frmProductMain_Load(object sender, EventArgs e)
         {
-            products = ProductDb.GetProducts();
+            products.Fill();
+            FillProductListBox();
+        }
+
+        private void HandleChange(ProductList products)
+        {
+            products.Save();
             FillProductListBox();
         }
 
@@ -29,9 +37,7 @@ namespace ProductMaintenance
         {
             lstProducts.Items.Clear();
             foreach (Product p in products)
-            {
                 lstProducts.Items.Add(p.GetDisplayText("\t"));
-            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -42,7 +48,7 @@ namespace ProductMaintenance
             if (product!=null)
             {
                 products.Add(product);
-                ProductDb.SaveProducts(products);
+                products.Save();
                 FillProductListBox();
             }
         }
@@ -50,22 +56,19 @@ namespace ProductMaintenance
         private void btnDelete_Click(object sender, EventArgs e)
         {
             int i = lstProducts.SelectedIndex;
-            if (i!=-1)
+            if (i != -1)
             {
                 Product product = products[i];
                 string message = "Are you sure you want to delete " + product.Description + "?";
                 DialogResult button = MessageBox.Show(message, "Confirm Delete", MessageBoxButtons.YesNo);
 
-                if (button==DialogResult.Yes)
+                if (button == DialogResult.Yes)
                 {
                     products.Remove(product);
-                    ProductDb.SaveProducts(products);
+                    products.Save();
                     FillProductListBox();
                 }
-            }
-
-            
-
+            }      
         }
 
         private void btnExit_Click(object sender, EventArgs e)

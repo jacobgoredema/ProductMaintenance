@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductMaintenance.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,47 +7,19 @@ using System.Threading.Tasks;
 
 namespace ProductMaintenance.ViewModels
 {
-    public class ProductList
+    public class ProductList: List<Product>
     {
-        private List<Product> products;
-
-        public Product this[int i]
+        // Modify the behaviour of the Add mothod of the List<Product class
+        public new void Add(Product p) => base.Insert(0, p);
+        
+        // provide 2 additional methods
+        public void Fill()
         {
-            get
-            {
-                return products[i];                
-            }
-            set
-            {
-                products[i] = value;
-            }
-        }
-        public ProductList()
-        {
-            products = new List<Product>();
+            List<Product> products = ProductDb.GetProducts();
+            foreach(Product product in products)
+                base.Add(product);
         }
 
-        public int Count => products.Count;
-
-        public void Add(Product product)
-        {
-            products.Add(product);
-        }
-
-        public void Add(string code,string description,decimal price)
-        {
-            Product p = new Product(code, description, price);
-            products.Add(p);
-        }
-
-        public Product GetProductByIndex(int i) => products[i];
-
-        public void Remove(Product product)
-        {
-            products.Remove(product);
-        }
-
-        public void Fill() => products = ProductDb.GetProducts();
-        public void Save() => ProductDb.SaveProducts(products);
+        public void Save() => ProductDb.SaveProducts(this);
     }
 }
