@@ -64,7 +64,10 @@
     <Compile Include="frmProducts.Designer.cs">
       <DependentUpon>frmProducts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IGenericPersistable.cs" />
     <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomList.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Software.cs" />
     <Compile Include="ProductDb.cs" />

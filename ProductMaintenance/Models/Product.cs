@@ -6,54 +6,16 @@ using System.Threading.Tasks;
 
 namespace ProductMaintenance.Models
 {
-    public class Product
+    public class Product:IComparable<Product>
     {
-        //private string author;
-        private string code;
-        private string description;
-        private decimal price;
+        public string Code { get; private set; }
+        public string Description { get; private set; }
+        public decimal Price { get; private set; }
 
         public Product()
         {
-
         }
 
-        public string Code
-        {
-            get
-            {
-                return code;
-            }
-            set
-            {
-                code = value;
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return description;
-            }
-            set
-            {
-                description = value;
-            }
-        }
-
-        public decimal Price
-        {
-            get
-            {
-                return price;
-            }
-            set
-            {
-                price = value;
-            }
-        }
-        
         public Product(string code, string description, decimal price)
         {
             Code = code;
@@ -62,6 +24,18 @@ namespace ProductMaintenance.Models
         }
 
         public virtual string GetDisplayText(string sep) =>
-            Code + sep + Description + sep + Price.ToString("c");    
+            Code + sep + Description + sep + Price.ToString("c");
+
+        public object Clone()
+        {
+            Product p = new Product();
+            p.Code = this.Code;
+            p.Description = this.Description;
+            p.Price = this.Price;
+
+            return p;
+        }
+
+        public int CompareTo(Product other) => this.Code.CompareTo(other.Code);
     }
 }
